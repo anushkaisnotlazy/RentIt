@@ -11,5 +11,6 @@ import com.google.rentit.user.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByGoogleEmail(String googleEmail);
+    Optional<User> findByUserName(String userName);
 
 }

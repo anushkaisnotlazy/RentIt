@@ -1,12 +1,15 @@
 package com.google.rentit.property.model;
 
-import java.time.Instant;
+import java.util.Date;
 
+import com.google.rentit.common.enums.ListingType;
 import com.google.rentit.common.enums.PropertyType;
 import com.google.rentit.user.model.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,7 +42,8 @@ public class Property {
 
     @NotNull(message = "Property type cannot be null")
     @Column(name = "type", nullable = false)
-    private PropertyType type;
+    @Enumerated(EnumType.STRING)
+    private PropertyType propertyType;
 
     @NotBlank(message = "Title cannot be blank")
     @Size(max = 255, message = "Title must be at most 255 characters")
@@ -55,14 +59,6 @@ public class Property {
     @Size(max = 500, message = "Address must be at most 500 characters")
     @Column(name = "address", nullable = false)
     private String address;
-
-    @NotNull(message = "Latitude cannot be null")
-    @Column(name = "latitude", nullable = false)
-    private Double latitude;
-
-    @NotNull(message = "Longitude cannot be null")
-    @Column(name = "longitude", nullable = false)
-    private Double longitude;
 
     // // PostGIS Point type for geospatial queries
     // @Column(name = "location_point", columnDefinition = "geometry(Point,4326)")
@@ -81,12 +77,12 @@ public class Property {
     private Integer numberOfBathrooms;
 
     // JSONB type for flexible amenities (could also be a separate entity/join table)
-    // @Column(name = "amenities", columnDefinition = "jsonb")
-    // private List<String> amenities; // Example: ["Wi-Fi", "Parking", "Furnished"]
+    @Column(name = "amenities", columnDefinition = "jsonb")
+    private String amenities; // Example: ["Wi-Fi", "Parking", "Furnished"]
 
     @NotNull(message = "Availability start date cannot be null")
     @Column(name = "availability_start_date", nullable = false)
-    private Instant availabilityStartDate;
+    private Date availabilityStartDate;
 
     @NotNull(message = "Is available for flatmates status cannot be null")
     @Column(name = "is_available_for_flatmates", nullable = false)
@@ -110,5 +106,9 @@ public class Property {
     @Size(max = 100, message = "City must be at most 100 characters")
     @Column(name = "city", nullable = false)
     private String city;
+
+    @Column(name = "listing_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ListingType listingType; 
 }
 

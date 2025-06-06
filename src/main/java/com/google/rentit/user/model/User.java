@@ -41,15 +41,10 @@ public class User {
     @Column(name = "google_email", nullable = false, unique = true)
     private String googleEmail;
 
-    @NotBlank(message = "First name cannot be blank")
+    @NotBlank(message = "User name cannot be blank")
     @Size(max = 100, message = "First name must be at most 100 characters")
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @NotBlank(message = "Last name cannot be blank")
-    @Size(max = 100, message = "Last name must be at most 100 characters")
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
+    @Column(name = "user_name", nullable = false)
+    private String userName;
 
     // @Size(max = 2048, message = "Profile picture URL must be at most 2048 characters")
     // @Column(name = "profile_picture_url")
@@ -66,12 +61,12 @@ public class User {
 
     // JSONB type for flexible living habits
     // @JdbcTypeCode is used for Hibernate 6+ to explicitly map JSONB
-    // @Column(name = "living_habits", columnDefinition = "jsonb")
-    // private Map<String, String> livingHabits; // Example: {"cleanliness": "very clean", "noise": "quiet"}
+    @Column(name = "living_habits", columnDefinition = "jsonb")
+    private String livingHabits; // Example: {"cleanliness": "very clean", "noise": "quiet"}
 
     // // JSONB type for flexible interests
-    // @Column(name = "interests", columnDefinition = "jsonb")
-    // private Map<String, String> interests; // Example: {"hobbies": "reading", "music_genre": "jazz"}
+    @Column(name = "interests", columnDefinition = "jsonb")
+    private String interests; // Example: {"hobbies": "reading", "music_genre": "jazz"}
 
     @PositiveOrZero(message = "Preferred radius must be positive or zero")
     @Column(name = "preferred_radius_km")
