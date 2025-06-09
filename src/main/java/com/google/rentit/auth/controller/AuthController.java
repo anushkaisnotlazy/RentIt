@@ -1,5 +1,74 @@
 package com.google.rentit.auth.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.google.rentit.auth.service.AuthService;
+import com.google.rentit.config.JwtService;
+import com.google.rentit.user.model.User;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
-    
+
+    @Autowired
+    private final AuthService authService;
+
+    @Autowired
+    private JwtService jwtService;
+
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignupRequest signUpRequest) {
+        try {
+            User newUser = authService.signUp(
+                signUpRequest.googleEmail(),
+                signUpRequest.userName(),
+                signUpRequest.role(),
+                signUpRequest.bio(),
+                signUpRequest.livingHabits(),
+                signUpRequest.interests(),
+                signUpRequest.googleId(),
+                signUpRequest.preferredRadiusKm(),
+                signUpRequest.preferredLocationPincode(),
+                signUpRequest.phoneNumber(),
+                signUpRequest.password()
+            );
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An unexpected error occurred during signup.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
+        try {
+            User authenticatedUser = authService.login(loginRequest.googleEmail(), loginRequest.password());
+            var accessToken = jwtService.createAccessToken(authenticatedUser);
+            var refreshToken = jwtService.createRefreshToken(authenticatedUser);
+            Cookie cookie = new Cookie("refreshToken", refreshToken);
+            cookie.setHttpOnly(true);
+            response.addCookie(cookie);
+            return new ResponseEntity<LoginResponse>(new LoginResponse(accessToken, "login Successful!!"), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","invalide email or password!!!"), HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","An unexpected error occurred during login."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

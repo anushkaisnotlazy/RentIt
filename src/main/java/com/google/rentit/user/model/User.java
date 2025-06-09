@@ -1,5 +1,8 @@
 package com.google.rentit.user.model;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import com.google.rentit.common.enums.Role;
 
 import jakarta.persistence.Column;
@@ -61,10 +64,12 @@ public class User {
 
     // JSONB type for flexible living habits
     // @JdbcTypeCode is used for Hibernate 6+ to explicitly map JSONB
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "living_habits", columnDefinition = "jsonb")
     private String livingHabits; // Example: {"cleanliness": "very clean", "noise": "quiet"}
 
     // // JSONB type for flexible interests
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "interests", columnDefinition = "jsonb")
     private String interests; // Example: {"hobbies": "reading", "music_genre": "jazz"}
 
@@ -76,8 +81,38 @@ public class User {
     @Column(name = "preferred_location_pincode")
     private String preferredLocationPincode;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @NotBlank(message = "Password cannot be blank")
+    @Size(max = 255, message = "Password must be at most 255 characters")
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    
+
     public String getPhoneNumber() {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
+        this.phoneNumber = phoneNumber;
+    
+    }
+
+    public void setPassword(String password) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPassword'");
+        this.password = password;
+    }
+
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+        return password;
     }
 }
