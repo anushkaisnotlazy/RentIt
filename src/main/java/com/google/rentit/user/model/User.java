@@ -18,12 +18,12 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@NoArgsConstructor 
-@AllArgsConstructor
+// @NoArgsConstructor 
+// @AllArgsConstructor
+@RequiredArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
@@ -91,28 +91,4 @@ public class User {
 
     
 
-    public String getPhoneNumber() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
-        this.phoneNumber = phoneNumber;
-    
-    }
-
-    public void setPassword(String password) {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'setPassword'");
-        this.password = password;
-    }
-
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
-        return password;
-    }
 }

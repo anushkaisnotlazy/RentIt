@@ -28,7 +28,7 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable Long id) {
         User user = userService.getUserById(id);
-        UserProfileDto dto = new UserProfileDto(user.getUserName(), user.getPhoneNumber());
+        UserProfileDto dto = new UserProfileDto(user.getUserName(), user.getGoogleEmail());
         return ResponseEntity.ok(dto);
     }
 

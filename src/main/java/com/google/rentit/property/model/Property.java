@@ -36,7 +36,7 @@ public class Property {
     private Long id;
 
     @NotNull(message = "Owner user ID cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_user_id", nullable = false)
     private User owner; // Using User entity for FK relationship
 
@@ -110,5 +110,7 @@ public class Property {
     @Column(name = "listing_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ListingType listingType; 
+
+
 }
 
