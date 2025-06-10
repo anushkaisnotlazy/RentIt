@@ -91,4 +91,55 @@ public class User {
 
     
 
+    public String getPhoneNumber() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
+        return phoneNumber;
+    }
+
+    public String getEmail() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
+        return googleEmail;
+    }
+
+    public void setEmail(String googleEmail) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
+        this.googleEmail
+        = googleEmail;
+    
+    }
+
+    public String getUserName() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
+        this.userName = userName;
+    
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
+        this.phoneNumber = phoneNumber;
+    
+    }
+
+    public void setPassword(String password) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPassword'");
+        this.password = password;
+    }
+
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+        return password;
+    }
 }

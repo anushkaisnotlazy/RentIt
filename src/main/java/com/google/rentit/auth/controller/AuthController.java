@@ -1,8 +1,14 @@
 package com.google.rentit.auth.controller;
 
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.rentit.auth.service.AuthService;
 import com.google.rentit.config.JwtService;
 import com.google.rentit.user.model.User;
+import com.google.rentit.user.service.UserService;
 
+import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -22,6 +30,10 @@ public class AuthController {
 
     @Autowired
     private final AuthService authService;
+
+    @Autowired
+    private UserService userService;
+
 
     @Autowired
     private JwtService jwtService;
@@ -69,6 +81,50 @@ public class AuthController {
             return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","invalide email or password!!!"), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","An unexpected error occurred during login."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/oauth/callback")
+    public void oauthSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletResponse response) throws IOException, java.io.IOException {
+        try {
+            Map<String, Object> userInfo = principal.getAttributes();
+            String email = (String) userInfo.get("email");
+            String name = (String) userInfo.get("name");
+
+            // logger.info("OAuth2 callback for email: {}", email);
+
+            // Check if user exists or create new user
+             Optional<User> maybeUser = Optional.ofNullable(userService.getUserByGoogleEmail(email));
+            User user;
+            
+            if (maybeUser.isPresent()) {
+                user = maybeUser.get();
+                // logger.info("Existing user found: {}", user.getUsername());
+            } else {
+                user = authService.createUserFromOAuth2User(principal);
+                // logger.info("New user created: {}", user.getUsername());
+            }
+
+            // Generate JWT token
+            String jwt = jwtService.createAccessToken(user);
+            
+            // Create refresh token and set cookie
+            String refreshToken = jwtService.createRefreshToken(user);
+            Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+            refreshTokenCookie.setHttpOnly(true);
+            refreshTokenCookie.setPath("/");
+            refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); 
+            refreshTokenCookie.setSecure(false); 
+            response.addCookie(refreshTokenCookie);
+            
+           
+            String redirectUrl = "http://localhost:3000/oauth/callback?token=" + jwt;
+            // logger.info("Redirecting to: {}", redirectUrl);
+            response.sendRedirect(redirectUrl);
+            
+        } catch (Exception e) {
+            // logger.error("OAuth2 callback failed: {}", e.getMessage(), e);
+            response.sendRedirect("http://localhost:3000/login?error=oauth_failed");
         }
     }
 }

@@ -1,10 +1,13 @@
 package com.google.rentit.auth.service;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.google.rentit.common.enums.Role;
@@ -64,4 +67,23 @@ public class AuthService {
 
         return user;
     }
+
+    public User createUserFromOAuth2User(OAuth2User oAuth2User) {
+        Map<String, Object> userInfo = oAuth2User.getAttributes();
+        String email = (String) userInfo.get("email");
+        String name = (String) userInfo.get("name");
+        
+        // Handle case where name might be null
+        String username = name != null ? name : email.split("@")[0];
+
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setUserName(username);
+        
+        // Set a default password for OAuth2 users
+        String defaultPassword = UUID.randomUUID().toString();
+        newUser.setPassword(passwordEncoder.encode(defaultPassword));
+        
+        return userRepository.save(newUser);
+}
 }
