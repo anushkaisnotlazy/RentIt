@@ -34,6 +34,7 @@ public class UserController {
             User user = userService.getUserById(id);
             UserProfileDto dto = new UserProfileDto(user.getUserName(), user.getEmail());
             return ResponseEntity.ok(dto);
+            // return ResponseEntity.ok(user);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -44,6 +45,7 @@ public class UserController {
         try {
             User createdUser = userService.createUser(user);
             return new ResponseEntity<>(new UserProfileDto(createdUser.getUserName(), createdUser.getPhoneNumber()), HttpStatus.CREATED);
+            // return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
@@ -55,9 +57,9 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         try {
             User updatedUser = userService.updateUser(id, user);
-            // UserProfileDto dto = new UserProfileDto(updatedUser.getUserName(), updatedUser.getPhoneNumber());
-            // return ResponseEntity.ok(dto);
-            return ResponseEntity.ok(updatedUser);
+            UserProfileDto dto = new UserProfileDto(updatedUser.getUserName(), updatedUser.getPhoneNumber());
+            return ResponseEntity.ok(dto);
+            // return ResponseEntity.ok(updatedUser);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException e) {
