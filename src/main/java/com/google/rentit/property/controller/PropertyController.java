@@ -43,7 +43,7 @@ public class PropertyController {
     @PostMapping("/add")
     public ResponseEntity<Property> addProperty(@RequestBody PropertyCreationDTO propertyCreationDTO) {
         Property property = propertyService.addProperty(propertyCreationDTO);
-        return ResponseEntity.ok(property);
+        return ResponseEntity.ok(propertyRepository.findById(property.getId()).orElse(null));
     }
 
     @PutMapping("/add/{id}")

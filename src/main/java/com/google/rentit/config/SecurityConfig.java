@@ -2,7 +2,6 @@ package com.google.rentit.config;
 
 
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -32,8 +28,8 @@ public class SecurityConfig {
     @Order(0)
     public SecurityFilterChain filterChainIgnoreAuth(HttpSecurity http) throws Exception {
         
-        http.securityMatcher("/api/auth/**", "/error", "/properties/**").authorizeHttpRequests((authorize) -> authorize
-                                    .requestMatchers("/api/auth/**", "/error", "/properties/**").permitAll())
+        http.securityMatcher("/api/auth/**", "/error", "/properties/**", "/users/**").authorizeHttpRequests((authorize) -> authorize
+                                    .requestMatchers("/api/auth/**", "/error", "/properties/**", "/users/**").permitAll())
                                     .cors(Customizer.withDefaults())
                                     .csrf((csrf) -> csrf.disable());
         return http.build();
@@ -43,12 +39,10 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/**").authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2
                 .jwt(jwt -> jwt
-                    .decoder(myJwtDecoder())
-                    .jwtAuthenticationConverter(myJwtAuthenticationConverter())))
+                    .decoder(myJwtDecoder())))
                 .cors(Customizer.withDefaults())
                 .csrf((csrf) -> csrf.disable());
         return http.build();
@@ -76,14 +70,14 @@ public class SecurityConfig {
         }
     }
 
-    private JwtAuthenticationConverter myJwtAuthenticationConverter() {
-        var jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            var role = jwt.getClaimAsBoolean("isAdmin") ? "ROLE_ADMIN" : "ROLE_USER";
-            grantedAuthorities.add(new SimpleGrantedAuthority(role));
-            return grantedAuthorities;
-        });
-        return jwtAuthenticationConverter;
-    }
+    // private JwtAuthenticationConverter myJwtAuthenticationConverter() {
+    //     var jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    //     jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
+    //         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    //         var role = jwt.getClaimAsBoolean("isAdmin") ? "ROLE_ADMIN" : "ROLE_USER";
+    //         grantedAuthorities.add(new SimpleGrantedAuthority(role));
+    //         return grantedAuthorities;
+    //     });
+    //     return jwtAuthenticationConverter;
+    // }
 }
