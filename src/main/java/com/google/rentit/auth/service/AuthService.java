@@ -40,13 +40,9 @@ public class AuthService {
         user.setGoogleEmail(googleEmail);
         user.setUserName(userName);
         user.setPhoneNumber(phoneNumber);
-        user.setRole(role);
         user.setBio(bio);
         user.setLivingHabits(livingHabits);
         user.setInterests(interests);
-        user.setGoogleId(googleId);
-        user.setPreferredRadiusKm(preferredRadiusKm);
-        user.setPreferredLocationPincode(preferredLocationPincode);
         user.setPassword(hashedPassword); 
 
         return userRepository.save(user);

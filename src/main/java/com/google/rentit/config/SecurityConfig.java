@@ -32,8 +32,8 @@ public class SecurityConfig {
     @Order(0)
     public SecurityFilterChain filterChainIgnoreAuth(HttpSecurity http) throws Exception {
         
-        http.securityMatcher("/api/auth/**", "/error", "/property/**").authorizeHttpRequests((authorize) -> authorize
-                                    .requestMatchers("/api/auth/**", "/error", "/property/**").permitAll())
+        http.securityMatcher("/api/auth/**", "/error", "/properties/**").authorizeHttpRequests((authorize) -> authorize
+                                    .requestMatchers("/api/auth/**", "/error", "/properties/**").permitAll())
                                     .cors(Customizer.withDefaults())
                                     .csrf((csrf) -> csrf.disable());
         return http.build();

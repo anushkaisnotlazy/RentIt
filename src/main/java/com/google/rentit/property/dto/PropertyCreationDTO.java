@@ -20,7 +20,7 @@ public class PropertyCreationDTO {
 
     
     @NotNull(message = "Owner user ID cannot be null")
-    private Long ownerId;
+    private Long RenterId;
 
     @NotNull(message = "Property type cannot be null")
     private PropertyType propertyType;

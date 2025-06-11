@@ -33,12 +33,9 @@ public class UserService {
         existingUser.setGoogleEmail(user.getGoogleEmail());
         existingUser.setUserName(user.getUserName());
         existingUser.setPhoneNumber(user.getPhoneNumber());
-        existingUser.setRole(user.getRole());
         existingUser.setBio(user.getBio());
         existingUser.setLivingHabits(user.getLivingHabits());
         existingUser.setInterests(user.getInterests());
-        existingUser.setPreferredRadiusKm(user.getPreferredRadiusKm());
-        existingUser.setPreferredLocationPincode(user.getPreferredLocationPincode());
 
         return userRepository.save(existingUser);
     }

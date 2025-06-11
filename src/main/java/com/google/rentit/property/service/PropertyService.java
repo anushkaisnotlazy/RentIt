@@ -37,14 +37,14 @@ public class PropertyService {
     // }
 
     public Property addProperty(PropertyCreationDTO propertyCreationDTO) {
-        Optional<User> optionalUser = userRepository.findById(propertyCreationDTO.getOwnerId());
+        Optional<User> optionalUser = userRepository.findById(propertyCreationDTO.getRenterId());
         if (optionalUser.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found");
         }
-        User owner = optionalUser.get();
+        User renter = optionalUser.get();
         Property property = new Property();
         mapDtoToEntity(propertyCreationDTO, property);
-        property.setOwner(owner);
+        property.setRenter(renter);
         return propertyRepository.save(property);
     }
 

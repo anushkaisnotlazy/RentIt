@@ -36,7 +36,7 @@ public class JwtService {
         return Jwts.builder()
                     .signWith(pair.getPrivate(), alg) //instead, you can use System.getProperty(...)
                     .subject(String.valueOf(user.getId()))
-                    .claims(Map.of("name", user.getUserName(), "isAdmin", user.getRole().equals("ADMIN")))
+                    .claims(Map.of("name", user.getUserName()))
                     .expiration(Date.from(Instant.now().plusSeconds(ACCESS_EXPIRY_SECONDS)))
                     .compact();
     }
@@ -58,7 +58,7 @@ public class JwtService {
         return Jwts.builder()
                     .signWith(pair.getPrivate(), alg)
                     .subject(String.valueOf(user.getId()))
-                    .claims(Map.of("name", user.getUserName(), "isAdmin", user.getRole().toString().equals("ADMIN")))
+                    .claims(Map.of("name", user.getUserName()))
                     .expiration(Date.from(Instant.now().plusSeconds(REFERSH_EXPIRY_SECONDS)))
                     .compact();
     }

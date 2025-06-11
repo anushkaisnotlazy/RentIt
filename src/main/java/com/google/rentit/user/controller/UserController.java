@@ -40,7 +40,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping("/createprofile")
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
             User createdUser = userService.createUser(user);
@@ -57,7 +57,7 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         try {
             User updatedUser = userService.updateUser(id, user);
-            UserProfileDto dto = new UserProfileDto(updatedUser.getUserName(), updatedUser.getPhoneNumber());
+            UserProfileDto dto = new UserProfileDto(updatedUser.getUserName(), updatedUser.getGoogleEmail());
             return ResponseEntity.ok(dto);
             // return ResponseEntity.ok(updatedUser);
         } catch (ResourceNotFoundException e) {
