@@ -38,6 +38,7 @@ public class UserService {
         existingUser.setBio(user.getBio());
         existingUser.setLivingHabits(user.getLivingHabits());
         existingUser.setInterests(user.getInterests());
+        existingUser.setGender(user.getGender());
 
         return userRepository.save(existingUser);
     }

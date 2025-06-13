@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.google.rentit.common.enums.ListingType;
+import com.google.rentit.common.enums.LookingFor;
 import com.google.rentit.common.enums.PropertyType;
 import com.google.rentit.user.model.User;
 
@@ -24,15 +25,15 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "property")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @CrossOrigin
 public class Property {
     
@@ -116,6 +117,9 @@ public class Property {
     @Enumerated(EnumType.STRING)
     private ListingType listingType; 
 
+    @Column(name = "looking_for", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LookingFor lookingFor;
 
 }
 

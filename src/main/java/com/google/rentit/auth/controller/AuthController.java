@@ -51,15 +51,12 @@ public class AuthController {
             User newUser = authService.signUp(
                 signUpRequest.googleEmail(),
                 signUpRequest.userName(),
-                signUpRequest.role(),
                 signUpRequest.bio(),
                 signUpRequest.livingHabits(),
                 signUpRequest.interests(),
-                signUpRequest.googleId(),
-                signUpRequest.preferredRadiusKm(),
-                signUpRequest.preferredLocationPincode(),
                 signUpRequest.phoneNumber(),
-                signUpRequest.password()
+                signUpRequest.password(),
+                signUpRequest.gender()
             );
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {

@@ -63,7 +63,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    
+    @NotBlank(message = "Google email cannot be blank")
+    @Column(name = "gender")
+    private String gender;
+
 
     public String getPhoneNumber() {
         // TODO Auto-generated method stub
