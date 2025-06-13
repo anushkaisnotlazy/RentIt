@@ -1,7 +1,9 @@
 package com.google.rentit.config; 
 
 
+import java.lang.reflect.Array;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,14 @@ import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
+@CrossOrigin
+
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
@@ -53,13 +59,28 @@ public class SecurityConfig {
         var config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("http://127.0.0.1:3000");
+        config.addAllowedOrigin("http://127.0.0.1:3000");
         config.setAllowedMethods(List.of("GET", "PUT", "POST", "OPTIONS", "DELETE"));
         config.addExposedHeader("Token-Status");
         var src = new UrlBasedCorsConfigurationSource();
         src.registerCorsConfiguration("/**", config);
         return src;
     }
+    @Bean
+       public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // Specify the exact origins that are allowed to make requests.
+        // MUST match your React app's development and production URLs.
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","http://localhost:5174", "http://localhost:3000")); // Your React app's origins
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+        configuration.setAllowCredentials(true); // Allow sending cookies/auth headers
+        configuration.setMaxAge(3600L); // Max age of the CORS pre-flight request in seconds
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Apply this CORS config to all paths
+        return source;
+    }
     private JwtDecoder myJwtDecoder() {
         if (!(jwtService.getPublicKey() instanceof RSAPublicKey)) {
             return null;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.google.rentit.property.model.Property;
 import com.google.rentit.property.repository.PropertyRepository;
 import com.google.rentit.property.service.PropertyService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/properties")
 public class PropertyController {

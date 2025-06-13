@@ -1,6 +1,8 @@
 package com.google.rentit.user.model;
 
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@CrossOrigin
 @Table(name = "users")
 public class User {
 

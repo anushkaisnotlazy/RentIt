@@ -2,11 +2,13 @@ package com.google.rentit.auth.controller;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
+@CrossOrigin
 public class OAuthController {
 
     private final ClientRegistrationRepository clientRegistrationRepository;

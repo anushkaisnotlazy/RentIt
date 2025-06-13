@@ -2,6 +2,8 @@ package com.google.rentit.property.dto;
 
 import java.sql.Date;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.google.rentit.common.enums.ListingType;
 import com.google.rentit.common.enums.PropertyType;
 
@@ -13,6 +15,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
+@CrossOrigin
 public class PropertyUpdateDTO {
 
     @NotNull(message = "Property type cannot be null")

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.google.rentit.user.model.User;
 
@@ -17,6 +18,8 @@ import io.jsonwebtoken.security.SignatureAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 
 @Service
+@CrossOrigin
+
 public class JwtService {
     private static final SignatureAlgorithm alg = Jwts.SIG.RS512;
     private KeyPair pair;

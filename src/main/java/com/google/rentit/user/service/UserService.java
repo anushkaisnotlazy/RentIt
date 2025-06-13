@@ -2,12 +2,14 @@ package com.google.rentit.user.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.google.rentit.exception.ResourceNotFoundException;
 import com.google.rentit.user.model.User;
 import com.google.rentit.user.repository.UserRepository;
 
 @Service
+@CrossOrigin
 public class UserService {
 
     private final UserRepository userRepository;

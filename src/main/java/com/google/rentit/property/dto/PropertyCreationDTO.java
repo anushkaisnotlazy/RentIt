@@ -4,6 +4,8 @@ package com.google.rentit.property.dto;
 
 import java.util.Date;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.google.rentit.common.enums.ListingType;
 import com.google.rentit.common.enums.PropertyType;
 
@@ -16,6 +18,7 @@ import lombok.Data;
 
 
 @Data
+@CrossOrigin
 public class PropertyCreationDTO {
 
     

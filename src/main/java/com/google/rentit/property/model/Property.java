@@ -2,6 +2,8 @@ package com.google.rentit.property.model;
 
 import java.util.Date;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.google.rentit.common.enums.ListingType;
 import com.google.rentit.common.enums.PropertyType;
 import com.google.rentit.user.model.User;
@@ -31,6 +33,7 @@ import lombok.NoArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@CrossOrigin
 public class Property {
     
     @Id

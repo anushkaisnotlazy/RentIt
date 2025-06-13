@@ -9,12 +9,15 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.google.rentit.common.enums.Role;
 import com.google.rentit.user.model.User;
 import com.google.rentit.user.repository.UserRepository;
 
 @Service
+@CrossOrigin
+
 public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
