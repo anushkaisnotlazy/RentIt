@@ -78,11 +78,11 @@ public class AuthController {
             Cookie cookie = new Cookie("refreshToken", refreshToken);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
-            return new ResponseEntity<LoginResponse>(new LoginResponse(accessToken, "Login Successful!!"), HttpStatus.OK);
+            return new ResponseEntity<LoginResponse>(new LoginResponse(accessToken, "Login Successful!!", authenticatedUser), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","Invalid email or password!!!"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","Invalid email or password!!!", null), HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
-            return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","An unexpected error occurred during login."), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<LoginResponse>(new LoginResponse("invalid","An unexpected error occurred during login.", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
