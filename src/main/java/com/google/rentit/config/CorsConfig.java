@@ -1,4 +1,4 @@
-package com.google.config;
+package com.google.rentit.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

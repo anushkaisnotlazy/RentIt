@@ -65,6 +65,19 @@ public class JwtService {
                     .expiration(Date.from(Instant.now().plusSeconds(REFERSH_EXPIRY_SECONDS)))
                     .compact();
     }
-
+    public String getUsernameFromToken(String token) {
+    try {
+        var parsedToken = Jwts.parser()
+                                .verifyWith(pair.getPublic())
+                                .build()
+                                .parseSignedClaims(token);
+        // Assuming "name" claim holds the username/email
+        return parsedToken.getPayload().get("name", String.class);
+    } catch (Exception e) {
+        // Log the exception properly
+        System.err.println("Token parsing failed: " + e.getMessage());
+        throw new RuntimeException("Invalid token or token expired.", e); // More specific error
+    }
+}
 }
 

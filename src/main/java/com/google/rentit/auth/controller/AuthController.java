@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -96,7 +97,8 @@ public class AuthController {
             // logger.info("OAuth2 callback for email: {}", email);
 
             // Check if user exists or create new user
-             Optional<User> maybeUser = Optional.ofNullable(userService.getUserByGoogleEmail(email));
+             Optional<User> maybeUser = authService.findByUserName(name);
+
             User user;
             
             if (maybeUser.isPresent()) {
@@ -120,13 +122,33 @@ public class AuthController {
             response.addCookie(refreshTokenCookie);
             
            
-            String redirectUrl = "http://localhost:3000/oauth/callback?token=" + jwt;
+            String redirectUrl = "http://localhost:5173/oauth/callback?token=" + jwt;
             // logger.info("Redirecting to: {}", redirectUrl);
             response.sendRedirect(redirectUrl);
             
         } catch (Exception e) {
             // logger.error("OAuth2 callback failed: {}", e.getMessage(), e);
-            response.sendRedirect("http://localhost:3000/login?error=oauth_failed");
+            response.sendRedirect("http://localhost:5173/login?error=oauth_failed");
+        }
+    }
+    @GetMapping("/me")
+    public ResponseEntity<User> getCurrentUser(@RequestHeader("Authorization") String token) {
+        try {
+            String jwt = token.startsWith("Bearer ") ? token.substring(7) : token;
+            String username = jwtService.getUsernameFromToken(jwt);
+            
+            if (username != null) {
+                Optional<User> user = authService.findByUserName(username);
+                if (user.isPresent()) {
+                    return new ResponseEntity<>(user.get(), HttpStatus.OK);
+                }
+            }
+            
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            // logger.error("Get current user failed: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 }
+

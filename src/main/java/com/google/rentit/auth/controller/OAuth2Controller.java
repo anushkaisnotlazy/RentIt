@@ -9,11 +9,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @CrossOrigin
-public class OAuthController {
+public class OAuth2Controller {
 
     private final ClientRegistrationRepository clientRegistrationRepository;
 
-    public OAuthController(ClientRegistrationRepository clientRegistrationRepository) {
+    public OAuth2Controller(ClientRegistrationRepository clientRegistrationRepository) {
         this.clientRegistrationRepository = clientRegistrationRepository;
     }
 
@@ -24,5 +24,5 @@ public class OAuthController {
                 "&redirect_uri=" + googleRegistration.getRedirectUri() + "&response_type=code&scope=" + googleRegistration.getScopes();
         return new RedirectView(authorizationUrl);
     }
+    
 }
-

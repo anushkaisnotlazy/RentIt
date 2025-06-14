@@ -85,4 +85,7 @@ public class AuthService {
         
         return userRepository.save(newUser);
 }
+    public Optional<User> findByUserName(String username) {
+        return userRepository.findByUserName(username);
+    }
 }

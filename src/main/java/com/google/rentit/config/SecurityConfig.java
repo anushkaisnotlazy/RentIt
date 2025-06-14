@@ -45,12 +45,17 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/**").authenticated())
-                .oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(jwt -> jwt
-                    .decoder(myJwtDecoder())))
-                .cors(Customizer.withDefaults())
-                .csrf((csrf) -> csrf.disable());
+        .requestMatchers("/**").authenticated())
+        .oauth2ResourceServer(oauth2 -> oauth2
+        .jwt(jwt -> jwt
+        .decoder(myJwtDecoder())))
+        .cors(Customizer.withDefaults())
+        .csrf((csrf) -> csrf.disable())
+        .oauth2Login(oauth2 -> oauth2
+        .defaultSuccessUrl("/api/auth/oauth/callback", true)
+        .failureUrl("http://localhost:5173/login?error=oauth_failed"));
+        ;
+        
         return http.build();
     }
 
