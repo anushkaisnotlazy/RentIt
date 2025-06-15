@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.google.rentit.common.enums.ListingType;
+import com.google.rentit.common.enums.LookingFor;
 import com.google.rentit.common.enums.PropertyType;
 
 import jakarta.validation.constraints.Min;
@@ -15,10 +16,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 
 @Data
 @CrossOrigin
+@RequiredArgsConstructor
 public class PropertyCreationDTO {
 
     
@@ -77,4 +80,7 @@ public class PropertyCreationDTO {
 
     @NotNull(message = "Listing type cannot be null")
     private ListingType listingType;
+
+    @NotNull(message = "Looking for field cannot be null")
+    private LookingFor lookingFor;
 }

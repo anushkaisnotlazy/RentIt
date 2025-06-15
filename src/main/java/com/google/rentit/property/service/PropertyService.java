@@ -74,6 +74,7 @@ public class PropertyService {
         property.setState(dto.getState());
         property.setCity(dto.getCity());
         property.setListingType(dto.getListingType());
+        property.setLookingFor(dto.getLookingFor());
     }
 
     public List<Property> getAllProperties() {

@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.google.rentit.common.enums.Role;
 import com.google.rentit.user.model.User;
 import com.google.rentit.user.repository.UserRepository;
 
@@ -30,8 +29,8 @@ public class AuthService {
     private UserRepository userRepository;
 
 
-    public User signUp(String googleEmail, String userName, Role role, String bio, String livingHabits, String interests,
-                       String googleId, Double preferredRadiusKm, String preferredLocationPincode, String phoneNumber, String rawPassword) {
+    public User signUp(String googleEmail, String userName, String bio, String livingHabits, String interests,
+                        String phoneNumber, String rawPassword, String gender) {
 
         if (userRepository.findByGoogleEmail(googleEmail).isPresent()) {
             throw new IllegalArgumentException("User with email " + googleEmail + " already exists.");
@@ -47,6 +46,7 @@ public class AuthService {
         user.setLivingHabits(livingHabits);
         user.setInterests(interests);
         user.setPassword(hashedPassword); 
+        user.setGender(gender);
 
         return userRepository.save(user);
     }
