@@ -8,8 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.google.rentit.property.dto.PhotoResponse;
 import com.google.rentit.property.dto.PropertyCreationDTO;
 import com.google.rentit.property.model.Property;
+import com.google.rentit.property.model.PropertyPhoto;
+import com.google.rentit.property.repository.PropertyPhotoRepository;
 import com.google.rentit.property.repository.PropertyRepository;
 import com.google.rentit.user.model.User;
 import com.google.rentit.user.repository.UserRepository;
@@ -22,6 +25,12 @@ public class PropertyService {
 
     @Autowired
     private PropertyRepository propertyRepository;
+
+    @Autowired
+    private PropertyPhotoRepository propertyPhotoRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private UserRepository userRepository;
@@ -80,5 +89,19 @@ public class PropertyService {
     public List<Property> getAllProperties() {
         return propertyRepository.findAll();
     }
+
+    private PhotoResponse convertPhotoToResponse(PropertyPhoto photo) {
+        PhotoResponse response = new PhotoResponse();
+        response.setId(photo.getId());
+        response.setImageUrl(photo.getImageUrl());
+        response.setThumbnailUrl(photo.getThumbnailUrl());
+        response.setCaption(photo.getCaption());
+        response.setFileSize(photo.getFileSize());
+        response.setWidth(photo.getWidth());
+        response.setHeight(photo.getHeight());
+        response.setUploadedAt(photo.getUploadedAt());
+        return response;
+    }
+
 
 }
