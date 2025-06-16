@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.google.rentit.user.model.User;
 
@@ -17,6 +18,8 @@ import io.jsonwebtoken.security.SignatureAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 
 @Service
+@CrossOrigin
+
 public class JwtService {
     private static final SignatureAlgorithm alg = Jwts.SIG.RS512;
     private KeyPair pair;
@@ -36,7 +39,7 @@ public class JwtService {
         return Jwts.builder()
                     .signWith(pair.getPrivate(), alg) //instead, you can use System.getProperty(...)
                     .subject(String.valueOf(user.getId()))
-                    .claims(Map.of("name", user.getUserName(), "isAdmin", user.getRole().equals("ADMIN")))
+                    .claims(Map.of("name", user.getUserName()))
                     .expiration(Date.from(Instant.now().plusSeconds(ACCESS_EXPIRY_SECONDS)))
                     .compact();
     }
@@ -58,10 +61,23 @@ public class JwtService {
         return Jwts.builder()
                     .signWith(pair.getPrivate(), alg)
                     .subject(String.valueOf(user.getId()))
-                    .claims(Map.of("name", user.getUserName(), "isAdmin", user.getRole().toString().equals("ADMIN")))
+                    .claims(Map.of("name", user.getUserName()))
                     .expiration(Date.from(Instant.now().plusSeconds(REFERSH_EXPIRY_SECONDS)))
                     .compact();
     }
-
+    public String getUsernameFromToken(String token) {
+    try {
+        var parsedToken = Jwts.parser()
+                                .verifyWith(pair.getPublic())
+                                .build()
+                                .parseSignedClaims(token);
+        // Assuming "name" claim holds the username/email
+        return parsedToken.getPayload().get("name", String.class);
+    } catch (Exception e) {
+        // Log the exception properly
+        System.err.println("Token parsing failed: " + e.getMessage());
+        throw new RuntimeException("Invalid token or token expired.", e); // More specific error
+    }
+}
 }
 

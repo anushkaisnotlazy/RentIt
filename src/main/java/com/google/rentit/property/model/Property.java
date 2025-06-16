@@ -2,7 +2,10 @@ package com.google.rentit.property.model;
 
 import java.util.Date;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.google.rentit.common.enums.ListingType;
+import com.google.rentit.common.enums.LookingFor;
 import com.google.rentit.common.enums.PropertyType;
 import com.google.rentit.user.model.User;
 
@@ -21,14 +24,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "property")
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
+@CrossOrigin
 public class Property {
     
     @Id
@@ -36,9 +42,9 @@ public class Property {
     private Long id;
 
     @NotNull(message = "Owner user ID cannot be null")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_user_id", nullable = false)
-    private User owner; // Using User entity for FK relationship
+    private User renter; // Using User entity for FK relationship
 
     @NotNull(message = "Property type cannot be null")
     @Column(name = "type", nullable = false)
@@ -77,7 +83,7 @@ public class Property {
     private Integer numberOfBathrooms;
 
     // JSONB type for flexible amenities (could also be a separate entity/join table)
-    @Column(name = "amenities", columnDefinition = "jsonb")
+    @Column(name = "amenities")
     private String amenities; // Example: ["Wi-Fi", "Parking", "Furnished"]
 
     @NotNull(message = "Availability start date cannot be null")
@@ -110,5 +116,10 @@ public class Property {
     @Column(name = "listing_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ListingType listingType; 
+
+    @Column(name = "looking_for", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LookingFor lookingFor;
+
 }
 
