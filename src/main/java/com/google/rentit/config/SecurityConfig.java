@@ -1,7 +1,6 @@
 package com.google.rentit.config; 
 
 
-import java.lang.reflect.Array;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +53,6 @@ public class SecurityConfig {
         .oauth2Login(oauth2 -> oauth2
         .defaultSuccessUrl("/api/auth/oauth/callback", true)
         .failureUrl("http://localhost:5173/login?error=oauth_failed"));
-        ;
         
         return http.build();
     }

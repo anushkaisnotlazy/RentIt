@@ -74,17 +74,37 @@ public class AuthService {
         
         // Handle case where name might be null
         String username = name != null ? name : email.split("@")[0];
-
+    
         User newUser = new User();
-        newUser.setEmail(email);
+        newUser.setGoogleEmail(email); // Changed to setGoogleEmail
         newUser.setUserName(username);
         
+        // Set a default pass
         // Set a default password for OAuth2 users
-        String defaultPassword = UUID.randomUUID().toString();
-        newUser.setPassword(passwordEncoder.encode(defaultPassword));
+       String defaultPassword = UUID.randomUUID().toString();
+    newUser.setPassword(passwordEncoder.encode(defaultPassword));
+    
+    return userRepository.save(newUser);
+    }
+
+//     public User createUserFromOAuth2User(OAuth2User oAuth2User) {
+//         Map<String, Object> userInfo = oAuth2User.getAttributes();
+//         String email = (String) userInfo.get("email");
+//         String name = (String) userInfo.get("name");
         
-        return userRepository.save(newUser);
-}
+//         // Handle case where name might be null
+//         String username = name != null ? name : email.split("@")[0];
+
+//         User newUser = new User();
+//         newUser.setEmail(email);
+//         newUser.setUserName(username);
+        
+//         // Set a default password for OAuth2 users
+//         String defaultPassword = UUID.randomUUID().toString();
+//         newUser.setPassword(passwordEncoder.encode(defaultPassword));
+        
+//         return userRepository.save(newUser);
+// }
     public Optional<User> findByUserName(String username) {
         return userRepository.findByUserName(username);
     }
