@@ -1,5 +1,6 @@
 package com.google.rentit.user.model;
 
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import jakarta.persistence.Column;
@@ -15,7 +16,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-// @NoArgsConstructor
+// @NoArgsConstructor 
 // @AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
@@ -40,6 +41,10 @@ public class User {
     @Column(name = "user_name", nullable = false)
     private String userName;
 
+    // @Size(max = 2048, message = "Profile picture URL must be at most 2048 characters")
+    // @Column(name = "profile_picture_url")
+    // private String profilePictureUrl;
+
     @Size(max = 1000, message = "Bio must be at most 1000 characters")
     @Column(name = "bio", columnDefinition = "TEXT")
     private String bio;
@@ -58,38 +63,60 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotBlank(message = "Google email cannot be blank")
     @Column(name = "gender")
     private String gender;
 
+
     public String getPhoneNumber() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
         return phoneNumber;
     }
 
     public String getEmail() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
         return googleEmail;
     }
 
     public void setEmail(String googleEmail) {
-        this.googleEmail = googleEmail;
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
+        this.googleEmail
+        = googleEmail;
+    
     }
 
     public String getUserName() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPhoneNumber'");
         return userName;
     }
 
     public void setUserName(String userName) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
         this.userName = userName;
+    
     }
 
     public void setPhoneNumber(String phoneNumber) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPhoneNumber'");
         this.phoneNumber = phoneNumber;
+    
     }
 
     public void setPassword(String password) {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'setPassword'");
         this.password = password;
     }
 
     public String getPassword() {
+        // TODO Auto-generated method stub
+        // throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
         return password;
     }
 }
